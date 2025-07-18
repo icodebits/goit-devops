@@ -1,4 +1,4 @@
-# Проєкт Terraform: AWS Інфраструктура (lesson-5)
+# Проєкт Terraform: AWS Інфраструктура (lesson-7)
 
 Цей проєкт створює базову інфраструктуру AWS з використанням Terraform.
 
@@ -11,7 +11,7 @@
 
 ## Структура проєкту
 ```bash
-lesson-5/
+lesson-7/
 │
 ├── main.tf                  # Головний файл для підключення модулів
 ├── backend.tf               # Налаштування бекенду для стейтів (S3 + DynamoDB)
@@ -65,6 +65,47 @@ terraform apply
 ### 4. Видалення інфраструктури
 ```bash
 terraform destroy
+```
+
+### 5. Оновлення kubeconfig для підключення до EKS-кластера
+```bash
+aws eks update-kubeconfig --region us-east-1 --name eks-cluster-demo
+```
+
+### 6. Перевірити з'єднання до EKS-кластера
+```bash
+kubectl get nodes
+```
+або
+
+```bash
+kubectl cluster-info
+```
+
+### 7. Отримати ECR URL з Terraform
+```bash
+export ECR_URL=$(terraform output -raw ecr_repository_url)
+```
+
+### 8. Зібрати Docker-образ
+```bash
+cd ../doker-django-app/django
+docker build -t l7-dj-app .
+```
+
+### 9. Тегувати образ
+```bash
+docker tag l7-dj-app:latest $ECR_URL
+```
+
+### 10. Login в ECR
+```bash
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_URL
+```
+
+### 10. Пушити образ в ECR
+```bash
+docker push $ECR_URL
 ```
 
 ## Огляд модулів
