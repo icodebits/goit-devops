@@ -55,8 +55,13 @@ spec:
       steps {
         container('git') {
           withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+            sh 'echo $USERNAME'
+            // also available as a Groovy variable
+            echo USERNAME
+            // or inside double quotes for string interpolation
+            echo "username is $USERNAME"
             sh '''
-              git clone https://"${USERNAME}":"$PASSWORD"@github.com/"$USERNAME"/goit-devops.git
+              git clone https://"$USERNAME":"$PASSWORD"@github.com/"$USERNAME"/goit-devops.git
               git checkout lesson-8-9
               cd goit-devops/charts/django-app
 
