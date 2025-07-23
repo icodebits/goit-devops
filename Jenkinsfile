@@ -17,6 +17,10 @@ spec:
         - sleep
       args:
         - 99d
+    - name: git
+      image: alpine/git
+      command: ["cat"]       # keep it idle so Jenkins can exec into it
+      tty: true
 """
     }
   }
