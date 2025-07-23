@@ -10,9 +10,8 @@ controller:
     targetPort: 8080
 
   serviceAccount:
-     name: jenkins-sa
-     create: false
-
+    name: jenkins-sa
+    create: false
 
   resources:
     limits:
@@ -78,11 +77,12 @@ controller:
                             scm {
                               git {
                                 remote {
-                                  url("${github_repo_url}")
+                                  url('${github_repo_url}')
                                   credentials("github-token")
                                 }
                                 branches("*/lesson-8-9")
                               }
+                              scriptPath("Jenkinsfile")
                             }
                           }
                         }
