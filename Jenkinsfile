@@ -54,9 +54,9 @@ spec:
     stage('Update Chart Tag in Git') {
       steps {
         container('git') {
-          withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: '$USERNAME', passwordVariable: '$PASSWORD')]) {
+          withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
             sh '''
-              echo $USERNAME
+              echo USERNAME
               git clone https://$USERNAME:$PASSWORD@github.com/$USERNAME/goit-devops.git
               git checkout lesson-8-9
               cd goit-devops/charts/django-app
