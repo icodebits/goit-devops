@@ -55,20 +55,20 @@ spec:
       steps {
         container('git') {
           withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-            sh """
-              git clone https://${USERNAME}:${PASSWORD}@github.com/${USERNAME}/goit-devops.git
+            sh '''
+              git clone https://$USERNAME:$PASSWORD@github.com/$USERNAME/goit-devops.git
               git checkout lesson-8-9
               cd goit-devops/charts/django-app
 
-              sed -i "s/tag: .*/tag: ${IMAGE_TAG}/" values.yaml
+              sed -i "s/tag: .*/tag: $IMAGE_TAG/" values.yaml
 
-              git config user.email "${COMMIT_EMAIL}"
-              git config user.name "${COMMIT_NAME}"
+              git config user.email "$COMMIT_EMAIL"
+              git config user.name "$COMMIT_NAME"
 
               git add values.yaml
-              git commit -m "Update image tag to ${IMAGE_TAG}"
+              git commit -m "Update image tag to $IMAGE_TAG"
               git push origin lesson-8-9
-            """
+            '''
           }
         }
       }
