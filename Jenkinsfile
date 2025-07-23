@@ -55,9 +55,9 @@ spec:
       steps {
         container('git') {
           withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-            sh 'echo $USERNAME'
+            //sh 'echo $USERNAME'
             // also available as a Groovy variable
-            echo USERNAME
+            //echo USERNAME
             // or inside double quotes for string interpolation
             echo "username is $USERNAME"
             sh '''
