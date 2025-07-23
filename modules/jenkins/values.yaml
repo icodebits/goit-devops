@@ -62,7 +62,7 @@ controller:
                 scm {
                   git {
                     remote {
-                      url('${github_repo_url}')
+                      url("https://github.com/icodebits/goit-devops.git")
                       credentials('github-token')
                     }
                     branches('*/lesson-8-9')
@@ -77,7 +77,7 @@ controller:
                             scm {
                               git {
                                 remote {
-                                  url('${github_repo_url}')
+                                  url("https://github.com/icodebits/goit-devops.git")
                                   credentials("github-token")
                                 }
                                 branches("*/lesson-8-9")
