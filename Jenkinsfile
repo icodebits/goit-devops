@@ -56,8 +56,7 @@ spec:
         container('git') {
           withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
             sh '''
-              set +x
-              git clone https://"$USERNAME":"$PASSWORD"@github.com/"$USERNAME"/goit-devops.git
+              git clone https://$USERNAME:$PASSWORD@github.com/$USERNAME/goit-devops.git
               git checkout lesson-8-9
               cd goit-devops/charts/django-app
 
