@@ -36,7 +36,7 @@ spec:
         container('kaniko') {
           sh '''
             /kaniko/executor \\
-              --context `pwd` \\
+              --context `pwd` /docker-django-app/django/ \\
               --dockerfile `pwd`/docker-django-app/django/Dockerfile \\
               --destination=$ECR_REGISTRY/$IMAGE_NAME:$IMAGE_TAG \\
               --cache=true \\
