@@ -54,7 +54,7 @@ spec:
     stage('Update Chart Tag in Git') {
       steps {
         container('git') {
-          withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+          withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: '$USERNAME', passwordVariable: '$PASSWORD')]) {
             sh '''
               echo $USERNAME
               git clone https://$USERNAME:$PASSWORD@github.com/$USERNAME/goit-devops.git
