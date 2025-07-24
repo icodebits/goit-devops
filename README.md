@@ -1,9 +1,8 @@
-# Проєкт Terraform: AWS Інфраструктура (lesson-7)
+# Проєкт Terraform: AWS Інфраструктура (lesson-9)
 
-Цей проєкт створює базову інфраструктуру AWS з використанням Terraform.
+Цей проєкт створює інфраструктуру AWS з використанням Terraform + Helm + Jenkins.
 
 Він охоплює:
-- Зберігання стейтів у S3 з блокуванням через DynamoDB
 - Побудову мережевої інфраструктури (VPC)
 - Створення репозиторію ECR для зберігання Docker-образів
 - Розгортання EKS-кластера з автоскейлінгом
@@ -13,11 +12,14 @@
 
 ## Структура проєкту
 ```bash
-lesson-7/
+/
 │
 ├── main.tf                         # Головний файл для підключення модулів
 ├── backend.tf                      # Налаштування бекенду для стейтів (S3 + DynamoDB)
 ├── outputs.tf                      # Загальне виведення ресурсів
+├── variables.tf                    # Змінні для модулей
+├── terraform.tfvars                # Змінні для Terraform
+├── Jenkinsfile                     # Файл конфігурації Jenkins
 │
 ├── modules/                        # Каталог з усіма модулями
 │   │
@@ -33,10 +35,25 @@ lesson-7/
 │   │   ├── variables.tf            # Змінні для VPC
 │   │   └── outputs.tf              # Виведення інформації про VPC
 │   │
-│   └── ecr/                        # Модуль для ECR
-│       ├── ecr.tf                  # Створення ECR репозиторію
-│       ├── variables.tf            # Змінні для ECR
-│       └── outputs.tf              # Виведення URL репозиторію ECR
+│   ├── ecr/                        # Модуль для ECR
+│   │   ├── ecr.tf                  # Створення ECR репозиторію
+│   │   ├── variables.tf            # Змінні для ECR
+│   │   └── outputs.tf              # Виведення URL репозиторію ECR
+│   │
+│   ├── eks/                        # Модуль для EKS
+│   │   ├── aws_ebs_csi_driver.tf   # AWS EBS CSI Driver
+│   │   ├── eks.tf                  # Створення EKS-кластера
+│   │   ├── node.tf                 # Створення EKS-нод
+│   │   ├── variables.tf            # Змінні для EKS
+│   │   └── outputs.tf              # Виведення інформації про EKS
+│   │
+│   └── jenkins/                    # Модуль для Jenkins
+│       ├── jenkins-secret.tf       # Створення Jenkins-секретів
+│       ├── jenkins.tf              # Створення Jenkins-кластера
+│       ├── providers.tf            # Підключення провайдерів
+│       ├── values.yaml             # Описання Jenkins контролера та JCasC
+│       ├── variables.tf            # Змінні для Jenkins
+│       └── outputs.tf              # Виведення інформації про Jenkins
 │
 ├── charts/                         # Каталог з Helm-каталогами    
 │   └── django-app/                 # Helm-каталог для Django-проєкту
@@ -47,6 +64,8 @@ lesson-7/
 │           ├── deployment.yaml     # Депломент
 │           ├── hpa.yaml            # Горизонтальне масштабування
 │           └── service.yaml        # Сервіс
+│
+├── docker-django-app/              # Каталог з Docker-Django-app/
 │
 └── README.md                       # Документація проєкту
 ```
@@ -151,6 +170,11 @@ kubectl get deployment django-app
 
 ```
 
+### 17. Перевірити k8s сервіси та їх URL
+```bash
+kubectl get svc -A
+```
+
 ## Огляд модулів
 
 ### s3-backend
@@ -173,6 +197,13 @@ kubectl get deployment django-app
     Додає Node Group зі змінним розміром (autoscaling)
     Параметри: instance_type, desired_size, max_size, min_size
     Виводить ім’я та endpoint кластера, IAM-роль вузлів
+### jenkins
+    Створює Jenkins-сервер
+    Виводить URL Jenkins-сервера
+    Створює Jenkins Job з підключенням до GitHub
+    Збирає Docker-образ з директорії docker-django-app
+    Пушить образ в ECR
+    Оновлює GitHub-репозиторій з версією білду
 
 ## Параметри, які можна змінювати
 
