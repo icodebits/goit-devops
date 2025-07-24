@@ -6,7 +6,13 @@
 - Побудову мережевої інфраструктури (VPC)
 - Створення репозиторію ECR для зберігання Docker-образів
 - Розгортання EKS-кластера з автоскейлінгом
-- Деплой Django-додатка в Kubernetes через Helm
+- Деплой Jenkins-сервера в Kubernetes через Helm
+- Деплой Argo CD в Kubernetes через Helm
+- Створення Jenkins Job з підключенням до GitHub та збиранням Docker-образів
+- Створення Jenkins Pipeline з підключенням до GitHub
+- Push Docker-образів в ECR через Jenkins Pipeline
+- Створення Argo CD Application з Helm-чартом Django-додатка
+- Деплой Django-додатка в Kubernetes через Argo CD Application
 
 ---
 
@@ -73,8 +79,67 @@
 
 
 ---
+## Застосування Terraform
 
-## Використання
+1. Ініціалізація Terraform:
+   ```bash
+   terraform init
+   ```
+
+2. Створення інфраструктури:
+   ```bash
+   terraform apply
+   ```
+
+3. В проєкті додано Jenkins та Argo CD через Helm, Terraform автоматично встановить ці сервіси й налаштує відповідні ресурси.
+
+## Перевірка Jenkins Job
+
+1. Відкрити веб-інтерфейс Jenkins:
+   - Дізнатись зовнішній IP сервісу Jenkins:
+     ```bash
+     kubectl get svc -n jenkins
+     ```
+   - Перейдіть в браузері за отриманою адресою (наприклад: `http://<EXTERNAL-IP>`)
+
+2. Увійти під обліковими даними адміністратора:
+   - Ім’я користувача: `admin`
+   - Пароль: `admin123`
+
+3. Переконатись, що існує `seed-job`:
+   - Якщо він є, натисніть **"Build Now"**, щоб згенерувати `goit-django-docker` pipeline.
+
+4. Перевірити, що `goit-django-docker` зʼявився в списку і запустився автоматично або вручну.
+
+## Перевірка результату в Argo CD
+
+1. Отримати URL доступу до Argo CD:
+   ```bash
+   kubectl get svc -n argocd
+   ```
+   - Знайти сервіс `argocd-server`, скопіюй його EXTERNAL-IP
+
+2. Відкрити веб-інтерфейс Argo CD:
+   ```
+   https://<EXTERNAL-IP>
+   ```
+
+3. Увійти в Argo CD:
+   - Ім’я користувача: `admin`
+   - Пароль: отримати командою:
+     ```bash
+     kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 --decode
+     ```
+
+4. Знайти Application з назвою `example-app`.
+
+5. Перевірити статус:
+   - `Synced` — конфігурація з Git застосована
+   - `Healthy` — ресурс працює коректно
+
+6. Натиснути **Sync** (якщо не було автоматичної синхронізації), щоб оновити кластер після зміни Helm-чарта в Git.
+
+## Використання ручних кроків синхронізації
 
 ### 1. Ініціалізація проєкту
 
@@ -204,6 +269,9 @@ kubectl get svc -A
     Збирає Docker-образ з директорії docker-django-app
     Пушить образ в ECR
     Оновлює GitHub-репозиторій з версією білду
+### argo_cd
+    Створює Application з Helm-чартом django-app
+    Робить Deployment django-app у кластері 
 
 ## Параметри, які можна змінювати
 
