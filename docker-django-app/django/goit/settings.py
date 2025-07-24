@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-+7aq3#92$cg45*e=z9+v7()t98^m2@uty$2!g7$hubx@1az!-u
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -121,16 +121,16 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-import os
-
-DATABASES = {
-
-	'default': {
-		'ENGINE': 'django.db.backends.postgresql',
-		'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
-		'PORT': os.environ.get('POSTGRES_PORT', '5432'),
-		'NAME': os.environ.get('POSTGRES_DB', 'postgres'),
-		'USER': os.environ.get('POSTGRES_USER', 'postgres'),
-		'PASSWORD': os.environ.get('POSTGRES_PASSWORD', ''),
-	}
-}
+#import os
+#
+#DATABASES = {
+#
+#	'default': {
+#		'ENGINE': 'django.db.backends.postgresql',
+#		'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
+#		'PORT': os.environ.get('POSTGRES_PORT', '5432'),
+#		'NAME': os.environ.get('POSTGRES_DB', 'postgres'),
+#		'USER': os.environ.get('POSTGRES_USER', 'postgres'),
+#		'PASSWORD': os.environ.get('POSTGRES_PASSWORD', ''),
+#	}
+#}
