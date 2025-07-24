@@ -1,4 +1,4 @@
-# Проєкт Terraform: AWS Інфраструктура (lesson-10)
+# Проєкт Terraform: AWS Інфраструктура для Django-проєкту
 
 Цей проєкт створює інфраструктуру AWS з використанням Terraform + Helm + Jenkins.
 
