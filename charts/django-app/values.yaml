@@ -1,6 +1,6 @@
 image:
-  repository: "253108853577.dkr.ecr.us-east-1.amazonaws.com/l7-ecr"
-  tag: v1.0.22
+  repository: "253108853577.dkr.ecr.us-east-1.amazonaws.com/l9-ecr"
+  tag: v1.0.23
   pullPolicy: IfNotPresent
 
 service:
