@@ -113,8 +113,13 @@ module "rds" {
   source = "./modules/rds"
 
   name                       = "django-app-db"
-  use_aurora                 = false
+  use_aurora                 = true
   aurora_instance_count      = 2
+
+  # --- Aurora-only ---
+  engine_cluster             = "aurora-postgresql"
+  engine_version_cluster     = "15.3"
+  parameter_group_family_aurora = "aurora-postgresql15"
 
   # --- RDS-only ---
   engine                     = "postgres"
